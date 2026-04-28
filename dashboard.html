@@ -1,0 +1,54 @@
+<!DOCTYPE html> 
+<html> 
+<head><title>Dashboard</title></head> 
+<body> 
+<h2>Welcome, {{ session.username }}</h2> 
+<form method="GET" action="/dashboard"> 
+Search: <input type="text" name="search" value="{{ search }}"> 
+<input type="submit" value="Filter"> 
+<a href="/dashboard">Clear</a> 
+</form> 
+<h3>Add New Courier</h3> 
+<form method="POST" action="/dashboard"> 
+Courier ID: <input type="text" name="courier_id" required><br> 
+Sender: <input type="text" name="sender" required><br> 
+Receiver: <input type="text" name="receiver" required><br> 
+Status: <input type="text" name="status" required><br> 
+<input type="submit" value="Add Courier"> 
+</form> 
+<h3>Couriers List</h3> 
+<table border="1" cellpadding="5"> 
+<tr> 
+<th>ID</th><th>Courier 
+ID</th><th>Sender</th><th>Receiver</th><th>Status</th><th>Update 
+Status</th><th>Delete</th> 
+</tr> 
+{% for c in couriers %} 
+<tr> 
+<td>{{ c[0] }}</td> 
+<td>{{ c[1] }}</td> 
+<td>{{ c[2] }}</td> 
+<td>{{ c[3] }}</td> 
+<td>{{ c[4] }}</td> 
+<td> 
+<form action="/update_status/{{ c[0] }}" method="POST"> 
+<input type="text" name="new_status" placeholder="New Status" required> 
+<input type="submit" value="Update"> 
+</form> 
+</td> 
+<td> 
+<a href="/delete/{{ c[0] }}" onclick="return confirm('Delete this 
+courier?');">Delete</a> 
+</td> 
+</tr> 
+{% endfor %} 
+</table> 
+<p><a href="/logout">Logout</a></p> 
+{% with messages = get_flashed_messages() %} 
+{% if messages %} 
+<ul>{% for message in messages %}<li>{{ message }}</li>{% endfor %}</ul> 
+{% endif %} 
+{% endwith %} 
+</body> 
+</html> 
+Link: http://127.0.0.1:5000
